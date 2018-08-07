@@ -1,4 +1,4 @@
-# Stripe Statement Conversion
+# Stripe Xero Conversion
 A ruby script for converting stripe payment .csv statements for import into Xero.
 
 Stripe outputs fees and transaction amounts in the CSV file as two separate
