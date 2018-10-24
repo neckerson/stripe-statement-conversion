@@ -2,24 +2,26 @@
 
 require 'csv'
 
-headings = %w[Date Payee InvoiceNumber Reference
-              ChargeCount Amount Status AccountCode TaxType
-              TaxAmount TrackingName1 TrackingOption1 TrackingName2 TrackingOption2]
+headings = ["Date", "Amount", "Payee", "Description", "Reference", "Check Number"]
 
 CSV.open('stripe-fees.csv', 'wb') do |csv|
   csv << headings
   CSV.foreach 'payouts.csv', :headers => true do |row|
-    csv << [row['Arrival Date (UTC)'].gsub(/\s.+/, ''), 'Stripe', row[' id'], 'Stripe Fee', row[' Payment Count'],
-      row['Total Fees'].gsub(/(\A-|\A)/){ |m| m == '-' ? '' : '-'}, row[' State'], '',
-            '', '', '', '', '', '', '',]
+    csv << [row['Arrival Date (UTC)'].gsub(/\s.+/, ''),
+            row['Total Fees'].gsub(/(\A-|\A)/){ |m| m == '-' ? '' : '-'},
+            'Stripe',
+            'Stripe Fee',
+            row['id']]
   end
 end
 
 CSV.open('stripe-payments.csv', 'wb') do |csv|
   csv << headings
   CSV.foreach 'payouts.csv', :headers => true do |row|
-    csv << [row['Arrival Date (UTC)'].gsub(/\s.+/, ''), 'Stripe', row[' id'], 'Stripe Payment', row[' Payment Count'],
-            row['Total Gross'], row[' State'], '',
-            '', '', '', '', '', '', '',]
+    csv << [row['Arrival Date (UTC)'].gsub(/\s.+/, ''),
+            row['Total Gross'],
+            'Stripe',
+            'Stripe Payment',
+            row['id']]
   end
 end
